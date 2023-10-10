@@ -1,0 +1,18 @@
+name: Build AsciiDoc to HTML
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build HTML
+      uses: docker://asciidoctor/docker-asciidoctor
+      with:
+        args: asciidoctor -r asciidoctor-diagram -b html5 -o output/index.html input/index.adoc

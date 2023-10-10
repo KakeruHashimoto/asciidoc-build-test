@@ -13,12 +13,14 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Build HTML
-      uses: docker://asciidoctor/docker-asciidoctor
-      with:
-        args: asciidoctor -r asciidoctor-diagram -b html5 -o index.html index.adoc
+      run: |
+        for file in **/*.adoc; do
+          asciidoctor -r asciidoctor-diagram -b html5 -o "${file%.*}.html" "$file"
+        done
 
     - name: Upload artifact
       uses: actions/upload-artifact@v2
       with:
         name: html-artifact
-        path: index.html
+        path: |
+          **/*.html

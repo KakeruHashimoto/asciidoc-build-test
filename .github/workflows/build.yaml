@@ -1,4 +1,4 @@
-name: Build AsciiDoc to HTML
+name: Build AsciiDoc to HTML and save as artifact
 
 on:
   push:
@@ -15,4 +15,10 @@ jobs:
     - name: Build HTML
       uses: docker://asciidoctor/docker-asciidoctor
       with:
-        args: asciidoctor -r asciidoctor-diagram -b html5 -o output/index.html input/index.adoc
+        args: asciidoctor -r asciidoctor-diagram -b html5 -o index.html index.adoc
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: html-artifact
+        path: index.html

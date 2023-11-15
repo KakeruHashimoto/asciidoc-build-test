@@ -1,11 +1,11 @@
 # This is a AsciiDoctor workflow to help you get started with Actions
-name: CI
+name: Build Asciidoc
 
-# Controls when the action will run. Triggers the workflow on push 
-# events but only for the master branch
 on:
   push:
     branches: [ main ]
+    paths:
+    - '**.adoc'
     
 jobs:
   build:
@@ -25,6 +25,6 @@ jobs:
     - name: Archive production artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: HTML files
+        name: html_artifacts
         path: |
           **/*.html

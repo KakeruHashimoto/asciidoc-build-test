@@ -1,26 +1,21 @@
-name: Build AsciiDoc to HTML and save as artifact
-
-on:
-  push:
-    branches: [ main ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
+    - name: Check out code
       uses: actions/checkout@v2
 
-    - name: Build HTML
+    - name: Install AsciiDoctor
       run: |
-        for file in **/*.adoc; do
-          asciidoctor -r asciidoctor-diagram -b html5 -o "${file%.*}.html" "$file"
-        done
+        sudo apt-get install -y asciidoctor
 
-    - name: Upload artifact
+    - name: Convert adoc files to HTML
+      run: |
+        find . -name "*.adoc" -exec asciidoctor {} \;
+
+    - name: Archive production artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: html-artifact
+        name: HTML files
         path: |
           **/*.html

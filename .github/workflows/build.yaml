@@ -1,7 +1,7 @@
-# This is a AsciiDoctor workflow to help you get started with Actions
 name: Build Asciidoc
 
 on:
+  # .adocファイルの変更がmainブランチにpushされたときに実行
   push:
     branches: [ main ]
     paths:
@@ -9,20 +9,21 @@ on:
     
 jobs:
   build:
+    # 実行環境の指定
     runs-on: ubuntu-latest
     steps:
     - name: Check out code
       uses: actions/checkout@v2
-
+    # AsciiDoctorをインストール
     - name: Install AsciiDoctor
       run: |
         sudo apt-get install -y asciidoctor
-
+    # すべてのadocファイルをhtmlに変換
     - name: Convert adoc files to HTML
       run: |
         find . -name "*.adoc" -exec asciidoctor {} \;
 
-    - name: Archive production artifacts
+    - name: Upload artifacts
       uses: actions/upload-artifact@v2
       with:
         name: html_artifacts
